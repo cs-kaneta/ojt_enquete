@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OJT評価アンケート</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+    }
+    .container {
+      max-width: 800px;
+    }
+    .question-card, .result-card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+    .question-card:hover {
+      transform: translateY(-5px);
+    }
+    .radio-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 8px 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      transition: all 0.2s ease-in-out;
+      text-align: center;
+    }
+    .radio-label:hover {
+      background-color: #f9fafb;
+      border-color: #d1d5db;
+    }
+    input[type="radio"]:checked + .radio-label {
+      background-color: #dbeafe;
+      border-color: #3b82f6;
+    }
+    .grade-S { color: #f59e0b; }
+    .grade-A { color: #10b981; }
+    .grade-B { color: #3b82f6; }
+    .grade-C { color: #ef4444; }
+  </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div id="survey-container" class="container mx-auto p-6 bg-white rounded-lg shadow-xl">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">OJT評価アンケート</h1>
+        <form id="survey-form" class="space-y-6">
+            <!-- Question Category 1 -->
+            <div class="question-card p-6">
+                <p class="text-lg font-semibold text-gray-700 mb-4">関係の質</p>
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">レベル１（挨拶、声掛け）</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q1_1" name="q1" value="3" class="hidden">
+                        <label for="q1_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q1_2" name="q1" value="2" class="hidden">
+                        <label for="q1_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q1_3" name="q1" value="1" class="hidden">
+                        <label for="q1_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">レベル２（気兼ねなく話せる）</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q2_1" name="q2" value="3" class="hidden">
+                        <label for="q2_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q2_2" name="q2" value="2" class="hidden">
+                        <label for="q2_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q2_3" name="q2" value="1" class="hidden">
+                        <label for="q2_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">レベル３（相手を尊重し感謝を言える）</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q3_1" name="q3" value="3" class="hidden">
+                        <label for="q3_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q3_2" name="q3" value="2" class="hidden">
+                        <label for="q3_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q3_3" name="q3" value="1" class="hidden">
+                        <label for="q3_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Category 2 -->
+            <div class="question-card p-6">
+                <p class="text-lg font-semibold text-gray-700 mb-4">基本姿勢</p>
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">遅刻せず、模範的な態度を示している</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q4_1" name="q4" value="3" class="hidden">
+                        <label for="q4_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q4_2" name="q4" value="2" class="hidden">
+                        <label for="q4_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q4_3" name="q4" value="1" class="hidden">
+                        <label for="q4_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">真摯かつ温和に接している</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q5_1" name="q5" value="3" class="hidden">
+                        <label for="q5_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q5_2" name="q5" value="2" class="hidden">
+                        <label for="q5_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q5_3" name="q5" value="1" class="hidden">
+                        <label for="q5_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">否定から入らず前向きな姿勢で接している</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q6_1" name="q6" value="3" class="hidden">
+                        <label for="q6_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q6_2" name="q6" value="2" class="hidden">
+                        <label for="q6_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q6_3" name="q6" value="1" class="hidden">
+                        <label for="q6_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Category 3 -->
+            <div class="question-card p-6">
+                <p class="text-lg font-semibold text-gray-700 mb-4">指導スキル</p>
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">褒める・叱るのメリハリがある</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q7_1" name="q7" value="3" class="hidden">
+                        <label for="q7_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q7_2" name="q7" value="2" class="hidden">
+                        <label for="q7_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q7_3" name="q7" value="1" class="hidden">
+                        <label for="q7_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">段階的に指導している</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q8_1" name="q8" value="3" class="hidden">
+                        <label for="q8_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q8_2" name="q8" value="2" class="hidden">
+                        <label for="q8_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q8_3" name="q8" value="1" class="hidden">
+                        <label for="q8_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">ミスややらかしを適切に指摘し、改善の方向を示している</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q9_1" name="q9" value="3" class="hidden">
+                        <label for="q9_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q9_2" name="q9" value="2" class="hidden">
+                        <label for="q9_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q9_3" name="q9" value="1" class="hidden">
+                        <label for="q9_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Category 4 -->
+            <div class="question-card p-6">
+                <p class="text-lg font-semibold text-gray-700 mb-4">コミュニケーション</p>
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">アイスブレイクや雑談を交え、話しやすい雰囲気をつくっている</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q10_1" name="q10" value="3" class="hidden">
+                        <label for="q10_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q10_2" name="q10" value="2" class="hidden">
+                        <label for="q10_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q10_3" name="q10" value="1" class="hidden">
+                        <label for="q10_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">質問や相談をしやすい空気をつくっている</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q11_1" name="q11" value="3" class="hidden">
+                        <label for="q11_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q11_2" name="q11" value="2" class="hidden">
+                        <label for="q11_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q11_3" name="q11" value="1" class="hidden">
+                        <label for="q11_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">意見や行動を頭ごなしに否定しない</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q12_1" name="q12" value="3" class="hidden">
+                        <label for="q12_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q12_2" name="q12" value="2" class="hidden">
+                        <label for="q12_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q12_3" name="q12" value="1" class="hidden">
+                        <label for="q12_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Category 5 -->
+            <div class="question-card p-6">
+                <p class="text-lg font-semibold text-gray-700 mb-4">サポート・計画性</p>
+                <div class="space-y-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">相談にすぐ、または時間を工夫して対応している</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q13_1" name="q13" value="3" class="hidden">
+                        <label for="q13_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q13_2" name="q13" value="2" class="hidden">
+                        <label for="q13_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q13_3" name="q13" value="1" class="hidden">
+                        <label for="q13_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">OJT計画に基づき、進捗を確認しながら段階的に指導している</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q14_1" name="q14" value="3" class="hidden">
+                        <label for="q14_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q14_2" name="q14" value="2" class="hidden">
+                        <label for="q14_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q14_3" name="q14" value="1" class="hidden">
+                        <label for="q14_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+                 <div class="space-y-4 mt-4">
+                    <p class="text-sm text-gray-600 mb-2"><span class="font-bold">他チームや関係者につなげてくれる</span></p>
+                    <div class="flex flex-1 flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+                        <input type="radio" id="q15_1" name="q15" value="3" class="hidden">
+                        <label for="q15_1" class="radio-label flex-1"><span>できている</span></label>
+                        <input type="radio" id="q15_2" name="q15" value="2" class="hidden">
+                        <label for="q15_2" class="radio-label flex-1"><span>どちらでもない</span></label>
+                        <input type="radio" id="q15_3" name="q15" value="1" class="hidden">
+                        <label for="q15_3" class="radio-label flex-1"><span>できていない</span></label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-6">
+              <button type="submit" class="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors duration-200">評価を見る</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="result-container" class="container mx-auto p-8 bg-white rounded-lg shadow-xl hidden">
+        <div class="result-card p-6 text-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">評価結果</h2>
+            <div class="mb-6 hidden">
+                <p class="text-lg text-gray-600">あなたの合計点数:</p>
+                <p id="total-score" class="text-5xl font-extrabold text-gray-900 mt-2"></p>
+            </div>
+            <div>
+                <p class="text-lg text-gray-600">あなたの評価:</p>
+                <p id="evaluation" class="text-xl md:text-2xl lg:text-3xl font-extrabold mt-2 leading-relaxed whitespace-pre-wrap"></p>
+            </div>
+            <div class="mt-8">
+                <canvas id="radarChart"></canvas>
+            </div>
+            <button onclick="location.reload()" class="mt-8 bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-400 transition-colors duration-200">もう一度試す</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('survey-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const scores = {
+                '関係の質': 0,
+                '基本姿勢': 0,
+                '指導スキル': 0,
+                'コミュニケーション': 0,
+                'サポート・計画性': 0
+            };
+            const questionGroups = {
+                '関係の質': ['q1', 'q2', 'q3'],
+                '基本姿勢': ['q4', 'q5', 'q6'],
+                '指導スキル': ['q7', 'q8', 'q9'],
+                'コミュニケーション': ['q10', 'q11', 'q12'],
+                'サポート・計画性': ['q13', 'q14', 'q15']
+            };
+
+            let rawTotalScore = 0;
+            let allAnswered = true;
+            let categoryScores = {
+                '関係の質': 0,
+                '基本姿勢': 0,
+                '指導スキル': 0,
+                'コミュニケーション': 0,
+                'サポート・計画性': 0
+            };
+
+            for (const category in questionGroups) {
+                let categoryRawScore = 0;
+                questionGroups[category].forEach(questionName => {
+                    const selectedOption = form.querySelector(`input[name="${questionName}"]:checked`);
+                    if (selectedOption) {
+                        categoryRawScore += parseInt(selectedOption.value, 10);
+                    } else {
+                        allAnswered = false;
+                    }
+                });
+                categoryScores[category] = categoryRawScore;
+                rawTotalScore += categoryRawScore;
+            }
+
+            if (!allAnswered) {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm mx-auto text-center">
+                        <p class="text-gray-800 font-semibold mb-4">全ての質問に回答してください。</p>
+                        <button onclick="this.closest('.fixed').remove()" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">閉じる</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                return;
+            }
+            
+            // 新しい点数ロジック: 15〜45点のスコアを0〜100点に正規化
+            const scaledScore = Math.round(((rawTotalScore - 15) / 30) * 100);
+
+            let evaluationHtml = '';
+            let colorClass = '';
+            
+            if (scaledScore >= 80) {
+                evaluationHtml = 'OJTマスター級トレーナー✨<br><span class="text-base font-normal">すでに殿堂入りクラス。育成スキルが極まり、周囲の模範となる存在。</span>';
+                colorClass = 'grade-S';
+            } else if (scaledScore >= 60) {
+                evaluationHtml = 'OJTエリートトレーナー💪<br><span class="text-base font-normal">安定感のある実力者。日常の指導に強みを発揮し、後輩からも信頼される。</span>';
+                colorClass = 'grade-A';
+            } else if (scaledScore >= 40) {
+                evaluationHtml = 'OJTブリーダー見習い🌱<br><span class="text-base font-normal">基本スキルは身についているが、指導経験の積み重ねでさらに進化が期待できる。</span>';
+                colorClass = 'grade-B';
+            } else {
+                evaluationHtml = 'OJTタマゴ状態🥚<br><span class="text-base font-normal">可能性は秘めている段階。周囲のサポートや経験を取り込みながら成長の準備を進めたい。</span>';
+                colorClass = 'grade-C';
+            }
+
+            document.getElementById('total-score').textContent = scaledScore;
+            const evaluationElement = document.getElementById('evaluation');
+            evaluationElement.innerHTML = evaluationHtml;
+            evaluationElement.className = `text-4xl md:text-5xl lg:text-6xl font-extrabold mt-2 leading-relaxed whitespace-pre-wrap ${colorClass}`;
+
+            document.getElementById('survey-container').classList.add('hidden');
+            document.getElementById('result-container').classList.remove('hidden');
+
+            // Radar chart data is also scaled
+            const radarData = Object.values(categoryScores).map(score => ((score - 3) / 6) * 100);
+
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(categoryScores),
+                    datasets: [{
+                        label: 'あなたのスコア',
+                        data: radarData,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100, 
+                            pointLabels: {
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            ticks: {
+                                display: false 
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
